@@ -5,6 +5,8 @@ use serde::{Serialize, Deserialize};
 use rayon::prelude::*;
 use std::time::Instant;
 
+//SVD, World2vec, Skipgram, CBOW - Doczytać
+
 #[derive(Serialize, Deserialize)]
 struct Tokenizer {
     training_data: Vec<String>,
@@ -166,12 +168,21 @@ fn train_new_and_predict(text: &String){
 
 fn load_and_predict(text: &String){
     let tokenizer: Tokenizer = Tokenizer::load_from_file("tokenizer.json");
-    let text: String = "CIRACKPDLSAETPMFPGNGDEQPLTENPRKYVM".to_string();
     let x = tokenizer.tokenize(text.clone());
+    print!("{:?}", tokenizer.dict);
     println!("Tokeny: {:?}", x);
     println!("Skuteczność: {:?}", (x.len() as f64)/(text.clone().chars().as_str().len() as f64));
 }
 
+fn show_how_to_tokenize(text: &String){
+    let tokenizer: Tokenizer = Tokenizer::load_from_file("tokenizer.json");
+    let x = tokenizer.tokenize(text.clone());
+
+    let tokens: Vec<String> = x.iter().map(|&a| tokenizer.dict[a].clone()).collect();
+    println!("{:?}", text.clone());
+    println!("{:?}", tokens);
+}
+
 fn main() {
-    train_new_and_predict(&"AAAAAAAAAAAA".to_string());
+    show_how_to_tokenize(&"CIRACKPDLSAETPMFPGNGDEQPLTENPRKYVM".to_string());
 }
